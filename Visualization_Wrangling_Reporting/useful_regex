@@ -1,0 +1,47 @@
+
+
+## extract properties that are not arrays
+
+## regex to capture all properties containing arrays, even if they contain numbers before the last dot
+
+properties.*\\.\\d
+
+## names excluding the arrayed properties and the base default properties (5), identified by absence of any dot
+
+setdiff(names(df_from_jql)[str_detect(names(df_from_jql), '\\.')], grep('properties.*\\.\\d', names(df_from_jql), value = TRUE))
+
+
+## regex to capture property name up till, but not including a number:
+
+properties(?:(?!\d).)*
+
+## regex to capture the last dot:
+
+\.(?!.*\.)
+
+## regex to capture property name up till, but not including the last dot:
+
+properties(?:(?!(\.(?!.*\.))).)*
+
+## regex (R format) to capture everything up till, but not including the first ?:
+
+(?:(?!\\?).)*
+
+## regex (R format) to capture everything after "email=":
+(?<=email\\=).*
+
+## to convert factor columns to characters:
+
+df_prototype %>% mutate_if(is.factor, as.character) -> df_prototype
+
+## to convert all empty strings to NA's
+
+df_prototype2 <- data.frame(lapply(df_prototype, function(x){gsub('^$', NA, x)}))
+
+# to exclude columns from dataframe by name:
+
+dat[ , !names(dat) %in% c("z","u")]
+
+## to get everything after the hash #
+
+(?<=#).*
